@@ -12,6 +12,8 @@
 
             ldstr "Hello, from the stack!"
             call void [System.Console]System.Console::WriteLine(string)
+            //ldc.i4 1
+            //call void [System.Console]System.Console::WriteLine(int32)
             ret
         }
     }
