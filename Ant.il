@@ -1,12 +1,18 @@
-.assembly HelloWorld {}
-.module HelloWorld.exe
+.assembly extern  mscorlib { auto }
+.assembly Ant {}
+.module Ant.dll
 
-.method static void Main() cil managed
-{
-    .entrypoint
-    .maxstack 1
+.namespace Foo {
+    .class public auto ansi beforefieldinit Ant extends [mscorlib]System.Object
+    {
+        .method public static void HelloFromIl() cil managed
+        {
+            .entrypoint
+            .maxstack 1
 
-    ldstr "Hello, World!"
-    call void [System.Console]System.Console::WriteLine(string)
-    ret
+            ldstr "Hello, from the stack!"
+            call void [System.Console]System.Console::WriteLine(string)
+            ret
+        }
+    }
 }

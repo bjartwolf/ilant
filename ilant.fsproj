@@ -8,6 +8,13 @@
   <ItemGroup>
     <Compile Include="Program.fs" />
     <Content Include="Ant.il" />
+    <Content Include="Ant.dll" >
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Ant.dll">
+    </Reference>
   </ItemGroup>
 
 </Project>
