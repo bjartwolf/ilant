@@ -2,5 +2,5 @@
 open Foo
 Ant.HelloFromIl()
 printfn "Hello from F#"
-
+Ant.Ant() |> printfn "%A"
 
