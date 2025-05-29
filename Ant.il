@@ -38,9 +38,11 @@
             ldc.i4.s 5 // x = 5
             stloc.1
             
-            ldc.i4.s 5 // y = 5
+            // set y = 5
+            ldc.i4.s 5 
             stloc.2
             
+            // set position to 1 in 2d array 
             ldloc.1 // load x 
             ldc.i4.8
             ldc.i4.2
@@ -67,14 +69,15 @@
             ldloc.0 // load pointer to array onto the stack 
             add // should be the address to the element...
             ldind.i4 // I think this loads the value it points too
-            call void [System.Console]System.Console::WriteLine(int32) // do not have to use line, but char
+            call void [System.Console]System.Console::Write(int32) // do not have to use line, but char
             ldc.i4 4 // skip four bytes since its int32
             add // i = i + 4
-            br LoopAndPrint 
-             
-            
-             
-            
+            // only branch if i <= 400
+            dup
+            ldc.i4 400 
+            clt
+            brtrue LoopAndPrint 
+            pop // we can not leave the counter on the stack, this gives invalid program
             
            // call void [System.Console]System.Console::WriteLine(int32)
             /*
@@ -82,9 +85,9 @@
             conv.u1    
             stind.i1 
 
+            */
             ldstr "running ant calculation!"
             call void [System.Console]System.Console::WriteLine(string)
-            */
             ldc.i4 17 
             ret
         }    
