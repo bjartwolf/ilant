@@ -70,9 +70,19 @@
             add // should be the address to the element...
             ldind.i4 // I think this loads the value it points too
             call void [System.Console]System.Console::Write(int32) // do not have to use line, but char
+            
+            
             ldc.i4 4 // skip four bytes since its int32
             add // i = i + 4
+            // skip new line if we have not a mod 10
+            dup
+            ldc.i4 40 
+            rem 
+            brtrue AfterNewline
+            
+            call void [System.Console]System.Console::WriteLine() // do not have to use line, but char
             // only branch if i <= 400
+    AfterNewline: 
             dup
             ldc.i4 400 
             clt
