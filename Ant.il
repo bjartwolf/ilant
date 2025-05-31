@@ -107,19 +107,19 @@ AntLoop:
             brfalse White
 Black:            // black , do not need the label but good instead of comments to read flow? 
             // black is turn 90 counter-clockwise, positive direction 
- //           ldloc.3
-//            ldc.i4 64 
-//            add
-//            conv.u1
-//            stloc.3
+           ldloc.3
+            ldc.i4 64 
+            add
+            conv.u1
+            stloc.3
             ldc.i4.0 // load white on stack
             br WriteColor 
 White:      
-//            ldloc.3
-//            ldc.i4 64 
-//            add
-//            conv.u1
- //           stloc.3
+            ldloc.3
+            ldc.i4 64 
+            add
+            conv.u1
+            stloc.3
             ldc.i4.1  // load black on stack
  WriteColor: 
             stind.i1 // write uint8 back to array 
