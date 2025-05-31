@@ -17,19 +17,19 @@
             ret
         }
         
-        .method public static int32 Ant() cil managed
+        // https://en.wikipedia.org/wiki/List_of_CIL_instructions
+        // https://learn.microsoft.com/en-us/dotnet/api/system.reflection.emit.opcodes.localloc?view=net-9.0
+         .method public static int32 Ant() cil managed
         {
             .maxstack 20
             .locals init (
                 // TODO store more compact 0 and 1 than int32
                 // 2D array, color 0 = white, 1 = black
-                [0] native int*, // pointer to array of positions, was int32 but I tried native
+                [0] native int*, // pointer to array of positions
                 [1] int32, //x
-                [2] int32,// y
+                [2] int32, // y
                 [3] uint8 // direction, r = 0, u = 64, l = 128, d = 192, overflowing
              )
-             // https://en.wikipedia.org/wiki/List_of_CIL_instructions
-//            https://learn.microsoft.com/en-us/dotnet/api/system.reflection.emit.opcodes.localloc?view=net-9.0
             ldc.i4 3600  // 30x30x4
             localloc // use localalloc to allocate memory  on the stack for our 2d array
             stloc.0
@@ -52,8 +52,9 @@
             dup // duplicate the i so we can use it after add
             ldloc.0 // load pointer to array onto the stack 
             add // should be the address to the element...
-            ldind.i4 // I think this loads the value it points too
-            call void [System.Console]System.Console::Write(int32) // do not have to use line, but char
+//            ldind.i4 // I think this loads the value it points too
+//            call void [System.Console]System.Console::Write(int32) // do not have to use line, but char
+            pop // not printing so pop it
             
             ldc.i4 4 // skip four bytes since its int32
             add // i = i + 4
@@ -62,7 +63,7 @@
             ldc.i4 120 // 30*x 
             rem 
             brtrue AfterNewline
-            call void [System.Console]System.Console::WriteLine() // do not have to use line, but char
+ //           call void [System.Console]System.Console::WriteLine() // do not have to use line, but char
             // only branch if i <= 400
     AfterNewline: 
             dup
@@ -88,8 +89,8 @@ AntLoop:
             brfalse White
 Black:            // black , do not need the label but good instead of comments to read flow? 
             // black is turn 90 counter-clockwise, positive direction 
-            ldstr "Black"
-            call void [System.Console]System.Console::WriteLine(string)
+//            ldstr "Black"
+  //          call void [System.Console]System.Console::WriteLine(string)
             ldloc.3
             ldc.i4 64 
             add
@@ -98,8 +99,8 @@ Black:            // black , do not need the label but good instead of comments 
             ldc.i4.0 // load white on stack
             br WriteColor 
 White:      
-            ldstr "White"
-            call void [System.Console]System.Console::WriteLine(string)
+ //           ldstr "White"
+   //         call void [System.Console]System.Console::WriteLine(string)
             ldloc.3
             ldc.i4 64 
             sub 
@@ -108,6 +109,7 @@ White:
             ldc.i4.1  // load black on stack
  WriteColor: 
             stind.i1 // write uint8 back to array 
+            /*
             ldstr "***"
             call void [System.Console]System.Console::WriteLine(string)
             ldstr "Dir: "
@@ -116,7 +118,7 @@ White:
             call void [System.Console]System.Console::Write(int32)
             ldstr ""
             call void [System.Console]System.Console::WriteLine(string)
-            
+           */ 
        
             // ends here
  Move:      // currently we do not change direction or look at direction
