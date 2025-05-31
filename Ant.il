@@ -105,28 +105,74 @@ AntLoop:
             ldind.i1  // read value onto stack
             // 0 = white, 1 = black, which means true is black
             brfalse White
-            // black 
+Black:            // black , do not need the label but good instead of comments to read flow? 
+            // black is turn 90 counter-clockwise, positive direction 
+ //           ldloc.3
+//            ldc.i4 64 
+//            add
+//            conv.u1
+//            stloc.3
             ldc.i4.0 // load white on stack
             br WriteColor 
-White:      ldc.i4.1 
-WriteColor: 
+White:      
+//            ldloc.3
+//            ldc.i4 64 
+//            add
+//            conv.u1
+ //           stloc.3
+            ldc.i4.1  // load black on stack
+ WriteColor: 
             stind.i1 // write uint8 back to array 
             ldstr "***"
             call void [System.Console]System.Console::WriteLine(string)
+            
+            // the x stuff
+            ldloc.1 // load x
+            ldc.i4.1
+            add
+            stloc.1 // write new 
+            // ends here
+            br InitLoopAndPrint
+            /*
  Move:      // currently we do not change direction or look at direction
-            //ldloc.3 
-            //ldc.i4.1
-            //add
+            ldloc.3 // load dir
+            ldc.i4 0
+            beq Right 
+            ldloc.3 // load dir
+            ldc.i4 64 
+            beq Up 
+            ldloc.3 // load dir
+            ldc.i4 128
+            beq Left
+            beq Down 
+ Right:
+            ldloc.2 // load y
+            ldc.i4.1
+            add 
+            stloc.2 // write new y
+            br InitLoopAndPrint 
+ Left:
+            ldloc.2 // load y
+            ldc.i4.1
+            sub 
+            stloc.2 // write new y
+            br InitLoopAndPrint 
+ Up: 
+            ldloc.1 // load x
+            ldc.i4.1
+            sub 
+            stloc.1 // write new x
+            br InitLoopAndPrint 
+ Down: 
             ldloc.1 // load x
             ldc.i4.1
             add
             stloc.1 // write new x
-             
-            
             br InitLoopAndPrint 
    // move forward
             ldstr "running ant calculation!"
             call void [System.Console]System.Console::WriteLine(string)
+            */
             ldc.i4 17 
             ret
         }    
