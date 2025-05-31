@@ -21,19 +21,19 @@
         {
             .maxstack 20
             .locals init (
+                // TODO store more compact 0 and 1 than int32
+                // 2D array, color 0 = white, 1 = black
                 [0] native int*, // pointer to array of positions, was int32 but I tried native
                 [1] int32, //x
                 [2] int32,// y
-                [3] int32 // direction
+                [3] uint8 // direction, r = 0, u = 64, l = 128, d = 192, overflowing
              )
              // https://en.wikipedia.org/wiki/List_of_CIL_instructions
-
 //            https://learn.microsoft.com/en-us/dotnet/api/system.reflection.emit.opcodes.localloc?view=net-9.0
             ldc.i4 400
-            localloc
+            localloc // use localalloc to allocate memory  on the stack for our 2d array
             stloc.0
             
-// use localalloc to allocate memory  
             // set x to 5
             ldc.i4.s 5 // x = 5
             stloc.1
@@ -42,6 +42,10 @@
             ldc.i4.s 5 
             stloc.2
             
+            // set dir to right 
+            ldc.i4.s 0 
+            stloc.3
+             
             // set position to 1 in 2d array 
             ldloc.1 // load x 
             ldc.i4.8
@@ -59,9 +63,6 @@
             // https://learn.microsoft.com/en-us/dotnet/api/system.reflection.emit.opcodes.stind_i4?view=net-9.0
             stind.i4 // store value at stack into memory addresss
             
-            // function to print out the array to the console?
-            // loop over the x and y and print it? Likely useful 
-            // look from 0 to 400, skipping 4 and 4 bytes and print the contents (can do down, C64 style too)
     InitLoopAndPrint: 
             ldc.i4 0 // "i"
     LoopAndPrint:
@@ -71,7 +72,6 @@
             ldind.i4 // I think this loads the value it points too
             call void [System.Console]System.Console::Write(int32) // do not have to use line, but char
             
-            
             ldc.i4 4 // skip four bytes since its int32
             add // i = i + 4
             // skip new line if we have not a mod 10
@@ -79,7 +79,6 @@
             ldc.i4 40 
             rem 
             brtrue AfterNewline
-            
             call void [System.Console]System.Console::WriteLine() // do not have to use line, but char
             // only branch if i <= 400
     AfterNewline: 
@@ -87,15 +86,33 @@
             ldc.i4 400 
             clt
             brtrue LoopAndPrint 
-            pop // we can not leave the counter on the stack, this gives invalid program
-            
-           // call void [System.Console]System.Console::WriteLine(int32)
-            /*
-            ldc.i4.1    
-            conv.u1    
-            stind.i1 
-
-            */
+            pop // we can not leave the counter we use to iterate on the stack, this gives invalid program
+AntLoop:             
+            // check the color, turn direction based on color
+            // calculate current position in array, read that and flip with xor1 
+            ldloc.1 // load x 
+            ldc.i4.8
+            ldc.i4.2
+            add // 10
+            mul // x*10
+            ldloc.2 // load y 
+            add // 10*x + y
+            ldc.i4.4 // int32 is 4 
+            mul // (10x+7) * size of int32
+            ldloc.0 // load pointer to array onto the stack 
+            add // add to pointer 
+            dup // keep pointer for later writing of color
+            ldind.i1  // read value onto stack
+            // 0 = white, 1 = black, which means true is black
+            brfalse White
+            // black 
+            ldc.i4.0 // load white on stack
+            br WriteColor 
+White:      ldc.i4.1 
+WriteColor: 
+            stind.i1 // write uint8 back to array 
+Move:       
+   // move forward
             ldstr "running ant calculation!"
             call void [System.Console]System.Console::WriteLine(string)
             ldc.i4 17 
