@@ -111,7 +111,19 @@ AntLoop:
 White:      ldc.i4.1 
 WriteColor: 
             stind.i1 // write uint8 back to array 
-Move:       
+            ldstr "***"
+            call void [System.Console]System.Console::WriteLine(string)
+ Move:      // currently we do not change direction or look at direction
+            //ldloc.3 
+            //ldc.i4.1
+            //add
+            ldloc.1 // load x
+            ldc.i4.1
+            add
+            stloc.1 // write new x
+             
+            
+            br InitLoopAndPrint 
    // move forward
             ldstr "running ant calculation!"
             call void [System.Console]System.Console::WriteLine(string)
