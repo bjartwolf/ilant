@@ -107,7 +107,7 @@ AntLoop:
             brfalse White
 Black:            // black , do not need the label but good instead of comments to read flow? 
             // black is turn 90 counter-clockwise, positive direction 
-           ldloc.3
+            ldloc.3
             ldc.i4 64 
             add
             conv.u1
@@ -125,6 +125,12 @@ White:
             stind.i1 // write uint8 back to array 
             ldstr "***"
             call void [System.Console]System.Console::WriteLine(string)
+            ldstr "Dir: "
+            call void [System.Console]System.Console::Write(string)
+            ldloc.3
+            call void [System.Console]System.Console::Write(int32)
+            ldstr ""
+            call void [System.Console]System.Console::WriteLine(string)
             
             // the x stuff
             ldloc.1 // load x
@@ -132,8 +138,6 @@ White:
             add
             stloc.1 // write new 
             // ends here
-            br InitLoopAndPrint
-            /*
  Move:      // currently we do not change direction or look at direction
             ldloc.3 // load dir
             ldc.i4 0
@@ -144,7 +148,7 @@ White:
             ldloc.3 // load dir
             ldc.i4 128
             beq Left
-            beq Down 
+            br Down 
  Right:
             ldloc.2 // load y
             ldc.i4.1
@@ -172,7 +176,6 @@ White:
    // move forward
             ldstr "running ant calculation!"
             call void [System.Console]System.Console::WriteLine(string)
-            */
             ldc.i4 17 
             ret
         }    
