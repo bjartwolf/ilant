@@ -30,39 +30,22 @@
              )
              // https://en.wikipedia.org/wiki/List_of_CIL_instructions
 //            https://learn.microsoft.com/en-us/dotnet/api/system.reflection.emit.opcodes.localloc?view=net-9.0
-            ldc.i4 400
+            ldc.i4 3600  // 30x30x4
             localloc // use localalloc to allocate memory  on the stack for our 2d array
             stloc.0
             
             // set x to 5
-            ldc.i4.s 5 // x = 5
+            ldc.i4.s 15 // x = 5
             stloc.1
             
             // set y = 5
-            ldc.i4.s 5 
+            ldc.i4.s 15 
             stloc.2
             
             // set dir to right 
             ldc.i4.s 0 
             stloc.3
              
-            // set position to 1 in 2d array 
-            ldloc.1 // load x 
-            ldc.i4.8
-            ldc.i4.2
-            add // 10
-            mul // x*10
-            ldloc.2 // load y 
-            add // 10*x + y
-            ldc.i4.4 // int32 is 4 
-            mul // (10x+7) * size of int32
-            ldloc.0 // load pointer to array onto the stack 
-            add // add to pointer 
-            
-            ldc.i4.s 1 
-            // https://learn.microsoft.com/en-us/dotnet/api/system.reflection.emit.opcodes.stind_i4?view=net-9.0
-            stind.i4 // store value at stack into memory addresss
-            
     InitLoopAndPrint: 
             ldc.i4 0 // "i"
     LoopAndPrint:
@@ -76,14 +59,14 @@
             add // i = i + 4
             // skip new line if we have not a mod 10
             dup
-            ldc.i4 40 
+            ldc.i4 120 // 30*x 
             rem 
             brtrue AfterNewline
             call void [System.Console]System.Console::WriteLine() // do not have to use line, but char
             // only branch if i <= 400
     AfterNewline: 
             dup
-            ldc.i4 400 
+            ldc.i4 3600 
             clt
             brtrue LoopAndPrint 
             pop // we can not leave the counter we use to iterate on the stack, this gives invalid program
@@ -91,12 +74,10 @@ AntLoop:
             // check the color, turn direction based on color
             // calculate current position in array, read that and flip with xor1 
             ldloc.1 // load x 
-            ldc.i4.8
-            ldc.i4.2
-            add // 10
-            mul // x*10
+            ldc.i4 30
+            mul // x 30*
             ldloc.2 // load y 
-            add // 10*x + y
+            add // 40*x + y
             ldc.i4.4 // int32 is 4 
             mul // (10x+7) * size of int32
             ldloc.0 // load pointer to array onto the stack 
@@ -107,6 +88,8 @@ AntLoop:
             brfalse White
 Black:            // black , do not need the label but good instead of comments to read flow? 
             // black is turn 90 counter-clockwise, positive direction 
+            ldstr "Black"
+            call void [System.Console]System.Console::WriteLine(string)
             ldloc.3
             ldc.i4 64 
             add
@@ -115,9 +98,11 @@ Black:            // black , do not need the label but good instead of comments 
             ldc.i4.0 // load white on stack
             br WriteColor 
 White:      
+            ldstr "White"
+            call void [System.Console]System.Console::WriteLine(string)
             ldloc.3
             ldc.i4 64 
-            add
+            sub 
             conv.u1
             stloc.3
             ldc.i4.1  // load black on stack
@@ -132,11 +117,7 @@ White:
             ldstr ""
             call void [System.Console]System.Console::WriteLine(string)
             
-            // the x stuff
-            ldloc.1 // load x
-            ldc.i4.1
-            add
-            stloc.1 // write new 
+       
             // ends here
  Move:      // currently we do not change direction or look at direction
             ldloc.3 // load dir
